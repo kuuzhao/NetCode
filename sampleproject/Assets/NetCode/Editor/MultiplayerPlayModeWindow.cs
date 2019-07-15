@@ -148,7 +148,9 @@ public class MultiplayerPlayModeConnectionSystem : ComponentSystem
 }
 
 [UpdateBefore(typeof(TickClientSimulationSystem))]
+#if !UNITY_CLIENT
 [UpdateBefore(typeof(TickServerSimulationSystem))]
+#endif
 public class MultiplayerPlayModeControllerSystem : ComponentSystem
 {
     public static int PresentedClient;

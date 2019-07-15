@@ -1,6 +1,12 @@
 using Unity.Entities;
 using Unity.Networking.Transport;
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+using UnityEngine;
+
 #if !UNITY_CLIENT
 [UpdateBefore(typeof(TickServerSimulationSystem))]
 #endif
@@ -15,7 +21,7 @@ public class AsteroidsClientServerControlSystem : ComponentSystem
     protected override void OnCreateManager()
     {
         var initEntity = EntityManager.CreateEntity();
-        var group = GetEntityQuery(ComponentType.ReadWrite<GameMainComponent>());
+        var group = GetEntityQuery(ComponentType.ReadWrite<GameSettingsComponent>());
         RequireForUpdate(group);
         m_initializeClientServer = true;
 
@@ -78,41 +84,144 @@ public class AsteroidsClientServerControlSystem : ComponentSystem
     }
 }
 
-public struct GameMainComponent : IComponentData
+public class GameMain : UnityEngine.MonoBehaviour
 {
-}
+#if false
+    private bool isPlaying = false;
+    private List<System.Type> allSystems;
+    public static World serverWorld;
+    ServerSimulationSystemGroup serverSimulationSystemGroup;
+    public static World clientWorld;
+    ClientSimulationSystemGroup clientSimulationSystemGroup;
+    ClientPresentationSystemGroup clientPresentationSystemGroup;
 
-public class GameMain : UnityEngine.MonoBehaviour, IConvertGameObjectToEntity
-{
-    public float asteroidRadius = 15f;
-    public float playerRadius = 10f;
-    public float bulletRadius = 1f;
-
-    public float asteroidVelocity = 10f;
-    public float playerForce = 50f;
-    public float bulletVelocity = 500f;
-
-    public int numAsteroids = 200;
-    public int levelWidth = 2048;
-    public int levelHeight = 2048;
-    public int damageShips = 1;
-    public void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
+    public void Start()
     {
-        var data = new GameMainComponent();
-        dstManager.AddComponentData(entity, data);
-        var settings = default(ServerSettings);
-        settings.asteroidRadius = asteroidRadius;
-        settings.playerRadius = playerRadius;
-        settings.bulletRadius = bulletRadius;
-
-        settings.asteroidVelocity = asteroidVelocity;
-        settings.playerForce = playerForce;
-        settings.bulletVelocity = bulletVelocity;
-
-        settings.numAsteroids = numAsteroids;
-        settings.levelWidth = levelWidth;
-        settings.levelHeight = levelHeight;
-        settings.damageShips = damageShips;
-        dstManager.AddComponentData(entity, settings);
+        // allSystems = GetAllSystems();
     }
+
+    public void OnGUI()
+    {
+        if (!isPlaying)
+        {
+            if (GUI.Button(new Rect(100, 100, 200, 100), "Server"))
+            {
+                StartServer();
+                isPlaying = true;
+            }
+
+            if (GUI.Button(new Rect(100, 200, 200, 100), "Client"))
+            {
+                StartClient();
+                isPlaying = true;
+            }
+
+            if (GUI.Button(new Rect(100, 300, 200, 100), "ClientListenServer"))
+            {
+                StartServer();
+                StartClient();
+                isPlaying = true;
+            }
+        }
+    }
+
+    private List<System.Type> GetAllSystems()
+    {
+        var systemTypes = new List<System.Type>();
+        foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+        {
+            if (!TypeManager.IsAssemblyReferencingEntities(assembly))
+                continue;
+
+            IReadOnlyList<Type> allTypes;
+            try
+            {
+                allTypes = assembly.GetTypes();
+            }
+            catch (System.Reflection.ReflectionTypeLoadException e)
+            {
+                allTypes = e.Types.Where(t => t != null).ToList();
+                Debug.LogWarning(
+                    $"GameMain failed loading assembly: {(assembly.IsDynamic ? assembly.ToString() : assembly.Location)}");
+            }
+
+            systemTypes.AddRange(allTypes.Where(FilterSystemType));
+        }
+
+        return systemTypes;
+    }
+
+    static bool FilterSystemType(Type type)
+    {
+        if (!type.IsSubclassOf(typeof(ComponentSystemBase)))
+            return false;
+        if (type.IsAbstract || type.ContainsGenericParameters)
+            return false;
+        if (type.GetConstructors().All(c => c.GetParameters().Length != 0))
+            return false;
+
+        return true;
+    }
+
+    private void StartServer()
+    {
+        serverWorld = new World("ServerWorld");
+        serverSimulationSystemGroup = serverWorld.GetOrCreateSystem<ServerSimulationSystemGroup>();
+
+        ScriptBehaviourUpdateOrder.UpdatePlayerLoop(serverWorld);
+    }
+
+    private void StartClient()
+    {
+        clientWorld = new World("ClientWorld");
+        clientSimulationSystemGroup = new ClientSimulationSystemGroup();
+        clientPresentationSystemGroup = new ClientPresentationSystemGroup();
+
+        ScriptBehaviourUpdateOrder.UpdatePlayerLoop(clientWorld);
+    }
+
+    private void ProcessSystemInGroups()
+    {
+        foreach (var type in allSystems)
+        {
+            var groups = type.GetCustomAttributes(typeof(UpdateInGroupAttribute), true);
+
+            foreach (var grp in groups)
+            {
+                var group = grp as UpdateInGroupAttribute;
+                if (group.GroupType == typeof(ClientAndServerSimulationSystemGroup) || group.GroupType == typeof(ServerSimulationSystemGroup))
+                {
+                    if (serverWorld != null)
+                        serverSimulationSystemGroup.AddSystemToUpdateList(serverWorld.GetOrCreateSystem(type) as ComponentSystemBase);
+                }
+
+                if (group.GroupType == typeof(ClientAndServerSimulationSystemGroup) || group.GroupType == typeof(ClientSimulationSystemGroup))
+                {
+                    if (clientWorld != null)
+                    {
+                        clientSimulationSystemGroup
+                            .AddSystemToUpdateList(clientWorld.GetOrCreateSystem(type) as ComponentSystemBase);
+                    }
+                }
+
+                if (group.GroupType == typeof(ClientPresentationSystemGroup))
+                {
+                    if (clientWorld != null)
+                    {
+                        clientPresentationSystemGroup
+                            .AddSystemToUpdateList(clientWorld.GetOrCreateSystem(type) as ComponentSystemBase);
+                    }
+                }
+
+                if (group.GroupType != typeof(ClientAndServerSimulationSystemGroup) &&
+                    group.GroupType != typeof(ServerSimulationSystemGroup) &&
+                    group.GroupType != typeof(ClientSimulationSystemGroup) &&
+                    group.GroupType != typeof(ClientPresentationSystemGroup))
+                {
+
+                }
+            }
+        }
+    }
+#endif
 }

@@ -85,7 +85,7 @@ public class ClientSimulationSystemGroup : ComponentSystemGroup
     private EndSimulationEntityCommandBufferSystem m_endBarrier;
     private GhostSpawnSystemGroup m_ghostSpawnGroup;
 #if UNITY_EDITOR
-    public int ClientWorldIndex { get; internal set; }
+    public int ClientWorldIndex { get; set; }
 #endif
     private FixedTimeLoop m_fixedTimeLoop;
     public float UpdateTime => Time.time - m_fixedTimeLoop.accumulatedTime;
