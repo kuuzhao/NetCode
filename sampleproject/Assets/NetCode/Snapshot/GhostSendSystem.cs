@@ -28,6 +28,8 @@ internal struct GhostSystemConstants
 {
     public const int SnapshotHistorySize = 32;
 }
+
+[DisableAutoCreation]
 [UpdateInGroup(typeof(ServerSimulationSystemGroup))]
 [AlwaysUpdateSystem]
 public class GhostSendSystem<TGhostSerializerCollection> : JobComponentSystem
@@ -752,6 +754,7 @@ public class GhostSendSystem<TGhostSerializerCollection> : JobComponentSystem
     }
 }
 
+[DisableAutoCreation]
 [UpdateInGroup(typeof(ServerSimulationSystemGroup))]
 [UpdateBefore(typeof(NetworkStreamReceiveSystem))]
 public class AddNetworkIdSystem : JobComponentSystem

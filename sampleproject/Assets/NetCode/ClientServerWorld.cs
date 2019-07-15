@@ -167,6 +167,7 @@ public class ClientAndServerSimulationSystemGroup : ComponentSystemGroup
 
 // Ticking of client and server worlds from the main world
 #if !UNITY_CLIENT
+[DisableAutoCreation]
 [AlwaysUpdateSystem]
 public class TickServerSimulationSystem : ComponentSystemGroup
 {
@@ -179,6 +180,7 @@ public class TickServerSimulationSystem : ComponentSystemGroup
 #if !UNITY_CLIENT
 [UpdateAfter(typeof(TickServerSimulationSystem))]
 #endif
+[DisableAutoCreation]
 [AlwaysUpdateSystem]
 public class TickClientSimulationSystem : ComponentSystemGroup
 {
@@ -186,6 +188,7 @@ public class TickClientSimulationSystem : ComponentSystemGroup
     {
     }
 }
+[DisableAutoCreation]
 [UpdateInGroup(typeof(PresentationSystemGroup))]
 [AlwaysUpdateSystem]
 public class TickClientPresentationSystem : ComponentSystemGroup

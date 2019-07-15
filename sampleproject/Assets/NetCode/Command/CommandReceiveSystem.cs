@@ -4,6 +4,7 @@ using Unity.Networking.Transport;
 using Unity.Networking.Transport.LowLevel.Unsafe;
 using Unity.Collections;
 
+[DisableAutoCreation]
 [UpdateInGroup(typeof(ServerSimulationSystemGroup))]
 [UpdateAfter(typeof(NetworkStreamReceiveSystem))]
 public class CommandReceiveSystem<TCommandData> : JobComponentSystem
