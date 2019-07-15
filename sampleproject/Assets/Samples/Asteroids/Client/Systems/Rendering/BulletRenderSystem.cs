@@ -8,6 +8,7 @@ using Unity.Transforms;
 
 namespace Asteroids.Client
 {
+    [DisableAutoCreation]
     [UpdateAfter(typeof(RenderInterpolationSystem))]
     [UpdateBefore(typeof(LineRenderSystem))]
     [UpdateInGroup(typeof(ClientPresentationSystemGroup))]

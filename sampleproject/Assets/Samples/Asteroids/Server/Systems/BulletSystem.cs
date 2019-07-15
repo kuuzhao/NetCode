@@ -6,6 +6,7 @@ using Unity.Jobs;
 
 namespace Asteroids.Server
 {
+    [DisableAutoCreation]
     [UpdateInGroup(typeof(ServerSimulationSystemGroup))]
     public class BulletSystem : JobComponentSystem
     {

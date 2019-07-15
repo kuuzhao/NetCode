@@ -14,6 +14,7 @@ namespace Asteroids.Client
         public int spawnCount;
     }
 
+    [DisableAutoCreation]
     [UpdateBefore(typeof(ParticleUpdateSystemGroup))]
     [UpdateAfter(typeof(RenderInterpolationSystem))]
     [UpdateInGroup(typeof(ClientPresentationSystemGroup))]
@@ -147,6 +148,7 @@ namespace Asteroids.Client
         }
     }
 
+    [DisableAutoCreation]
     [UpdateBefore(typeof(ParticleUpdateSystemGroup))]
     [UpdateAfter(typeof(ParticleEmitterSystem))]
     [UpdateInGroup(typeof(ClientPresentationSystemGroup))]

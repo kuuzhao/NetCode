@@ -8,6 +8,7 @@ using Unity.Transforms;
 
 namespace Asteroids.Server
 {
+    [DisableAutoCreation]
     [UpdateInGroup(typeof(ServerSimulationSystemGroup))]
     [UpdateAfter(typeof(AsteroidSystem))]
     [UpdateAfter(typeof(BulletSystem))]

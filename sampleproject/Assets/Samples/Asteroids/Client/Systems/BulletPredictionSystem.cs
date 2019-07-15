@@ -4,6 +4,7 @@ using Unity.Entities;
 using Unity.Jobs;
 using Unity.Transforms;
 
+[DisableAutoCreation]
 [UpdateAfter(typeof(GhostReceiveSystemGroup))]
 [UpdateBefore(typeof(AfterSimulationInterpolationSystem))]
 [UpdateInGroup(typeof(ClientSimulationSystemGroup))]

@@ -6,6 +6,7 @@ using Unity.Transforms;
 
 namespace Asteroids.Server
 {
+    [DisableAutoCreation]
     [UpdateAfter(typeof(AsteroidsCommandReceiveSystem))]
     [UpdateInGroup(typeof(ServerSimulationSystemGroup))]
     public class SteeringSystem : JobComponentSystem

@@ -1,6 +1,7 @@
 using Unity.Entities;
 using Unity.Transforms;
 
+[DisableAutoCreation]
 public partial class BulletGhostSpawnSystem : DefaultGhostSpawnSystem<BulletSnapshotData>
 {
     protected override EntityArchetype GetGhostArchetype()

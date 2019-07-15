@@ -16,6 +16,7 @@ namespace Asteroids.Client
         public int teleport;
     }
 
+    [DisableAutoCreation]
     [UpdateInGroup(typeof(ClientPresentationSystemGroup))]
     public class LineRenderSystem : JobComponentSystem
     {

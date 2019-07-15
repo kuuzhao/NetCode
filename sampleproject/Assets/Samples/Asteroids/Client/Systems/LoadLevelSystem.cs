@@ -4,6 +4,7 @@ using Unity.Collections;
 
 namespace Asteroids.Client
 {
+    [DisableAutoCreation]
     [UpdateInGroup(typeof(ClientSimulationSystemGroup))]
     [UpdateBefore(typeof(RpcSendSystem))]
     public class LoadLevelSystem : JobComponentSystem

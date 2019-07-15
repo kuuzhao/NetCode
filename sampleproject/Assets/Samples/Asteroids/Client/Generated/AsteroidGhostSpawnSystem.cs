@@ -1,6 +1,7 @@
 using Unity.Entities;
 using Unity.Transforms;
 
+[DisableAutoCreation]
 public partial class AsteroidGhostSpawnSystem : DefaultGhostSpawnSystem<AsteroidSnapshotData>
 {
     protected override EntityArchetype GetGhostArchetype()

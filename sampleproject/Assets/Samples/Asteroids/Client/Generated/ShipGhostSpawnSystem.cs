@@ -1,6 +1,7 @@
 using Unity.Entities;
 using Unity.Transforms;
 
+[DisableAutoCreation]
 public partial class ShipGhostSpawnSystem : DefaultGhostSpawnSystem<ShipSnapshotData>
 {
     protected override EntityArchetype GetGhostArchetype()

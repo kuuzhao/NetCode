@@ -8,6 +8,7 @@ using Unity.Transforms;
 
 namespace Asteroids.Server
 {
+    [DisableAutoCreation]
     [UpdateInGroup(typeof(ServerSimulationSystemGroup))]
     [AlwaysUpdateSystem]
     public class AsteroidSpawnSystem : JobComponentSystem
@@ -131,6 +132,7 @@ namespace Asteroids.Server
     {
     }
 
+    [DisableAutoCreation]
     [UpdateInGroup(typeof(ServerSimulationSystemGroup))]
     public class PlayerSpawnSystem : JobComponentSystem
     {
@@ -206,6 +208,7 @@ namespace Asteroids.Server
         }
     }
 
+    [DisableAutoCreation]
     [UpdateInGroup(typeof(ServerSimulationSystemGroup))]
     [UpdateBefore(typeof(MultiplayerSampleGhostSendSystem))]
     public class PlayerCompleteSpawnSystem : JobComponentSystem

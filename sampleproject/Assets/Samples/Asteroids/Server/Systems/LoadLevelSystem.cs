@@ -8,6 +8,7 @@ namespace Asteroids.Server
     {
     }
 
+    [DisableAutoCreation]
     [UpdateInGroup(typeof(ServerSimulationSystemGroup))]
     [UpdateBefore(typeof(RpcSendSystem))]
     [AlwaysUpdateSystem]

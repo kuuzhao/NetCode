@@ -6,6 +6,7 @@
     using Unity.Networking.Transport.Utilities;
     using Unity.Transforms;
 
+    [DisableAutoCreation]
     [UpdateAfter(typeof(InputSystem))]
     [UpdateAfter(typeof(GhostReceiveSystemGroup))]
     [UpdateBefore(typeof(AfterSimulationInterpolationSystem))]

@@ -8,6 +8,7 @@ using Unity.Transforms;
 
 namespace Asteroids.Client
 {
+    [DisableAutoCreation]
     [UpdateInGroup(typeof(ClientPresentationSystemGroup))]
     [UpdateBefore(typeof(LineRenderSystem))]
     [UpdateAfter(typeof(RenderInterpolationSystem))]
@@ -15,6 +16,7 @@ namespace Asteroids.Client
     {
     }
 
+    [DisableAutoCreation]
     [UpdateInGroup(typeof(ParticleUpdateSystemGroup))]
     public class ParticleRenderSystem : JobComponentSystem
     {
@@ -48,6 +50,7 @@ namespace Asteroids.Client
         }
     }
 
+    [DisableAutoCreation]
     [UpdateBefore(typeof(ParticleRenderSystem))]
     [UpdateInGroup(typeof(ParticleUpdateSystemGroup))]
     public class ParticleAgeSystem : JobComponentSystem
@@ -87,6 +90,7 @@ namespace Asteroids.Client
         }
     }
 
+    [DisableAutoCreation]
     [UpdateBefore(typeof(ParticleRenderSystem))]
     [UpdateInGroup(typeof(ParticleUpdateSystemGroup))]
     public class ParticleMoveSystem : JobComponentSystem
@@ -111,6 +115,7 @@ namespace Asteroids.Client
         }
     }
 
+    [DisableAutoCreation]
     [UpdateBefore(typeof(ParticleRenderSystem))]
     [UpdateAfter(typeof(ParticleAgeSystem))]
     [UpdateInGroup(typeof(ParticleUpdateSystemGroup))]
@@ -133,6 +138,7 @@ namespace Asteroids.Client
         }
     }
 
+    [DisableAutoCreation]
     [UpdateBefore(typeof(ParticleRenderSystem))]
     [UpdateAfter(typeof(ParticleAgeSystem))]
     [UpdateInGroup(typeof(ParticleUpdateSystemGroup))]

@@ -9,6 +9,7 @@ using Unity.Networking.Transport.LowLevel.Unsafe;
 
 namespace Asteroids.Client
 {
+    [DisableAutoCreation]
     [UpdateInGroup(typeof(PresentationSystemGroup))]
     public class InputSamplerSystem : ComponentSystem
     {
@@ -19,6 +20,8 @@ namespace Asteroids.Client
                 ++spacePresses;
         }
     }
+
+    [DisableAutoCreation]
     [UpdateInGroup(typeof(SimulationSystemGroup))]
 #if !UNITY_SERVER
     [UpdateAfter(typeof(TickClientSimulationSystem))]
@@ -31,6 +34,7 @@ namespace Asteroids.Client
         }
     }
 
+    [DisableAutoCreation]
     [UpdateInGroup(typeof(ClientSimulationSystemGroup))]
     [UpdateBefore(typeof(AsteroidsCommandSendSystem))]
     // Try to sample input as late as possible

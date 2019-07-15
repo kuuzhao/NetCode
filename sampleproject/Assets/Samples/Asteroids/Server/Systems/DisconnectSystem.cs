@@ -3,6 +3,7 @@ using Unity.Jobs;
 
 namespace Asteroids.Server
 {
+    [DisableAutoCreation]
     [UpdateInGroup(typeof(ServerSimulationSystemGroup))]
     [UpdateAfter(typeof(CollisionSystem))]
     public class DisconnectSystem : JobComponentSystem

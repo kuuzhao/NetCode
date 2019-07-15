@@ -8,6 +8,7 @@ using UnityEngine;
 
 namespace Asteroids.Client
 {
+    [DisableAutoCreation]
     [UpdateAfter(typeof(RenderInterpolationSystem))]
     [UpdateBefore(typeof(ParticleEmitterSystem))]
     [UpdateInGroup(typeof(ClientPresentationSystemGroup))]
@@ -29,6 +30,7 @@ namespace Asteroids.Client
         }
     }
 
+    [DisableAutoCreation]
     [UpdateAfter(typeof(RenderInterpolationSystem))]
     [UpdateBefore(typeof(LineRenderSystem))]
     [UpdateInGroup(typeof(ClientPresentationSystemGroup))]
@@ -118,6 +120,7 @@ namespace Asteroids.Client
         }
     }
 
+    [DisableAutoCreation]
     [UpdateBefore(typeof(LineRenderSystem))]
     [UpdateAfter(typeof(RenderInterpolationSystem))]
     [UpdateInGroup(typeof(ClientPresentationSystemGroup))]
