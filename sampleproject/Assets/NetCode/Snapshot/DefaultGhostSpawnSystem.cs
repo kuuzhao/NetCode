@@ -5,7 +5,6 @@ using Unity.Entities;
 using Unity.Jobs;
 using Unity.Networking.Transport.Utilities;
 
-[DisableAutoCreation]
 [UpdateInGroup(typeof(GhostSpawnSystemGroup))]
 [AlwaysUpdateSystem]
 public abstract class DefaultGhostSpawnSystem<T> : JobComponentSystem

@@ -5,6 +5,8 @@ using Unity.Networking.Transport;
 using UnityEditor;
 using UnityEngine;
 
+#if false
+
 public class MultiplayerPlayModeWindow : EditorWindow
 {
     const string k_PrefsKeyPrefix = "MultiplayerPlayMode";
@@ -180,3 +182,4 @@ public class MultiplayerPlayModeControllerSystem : ComponentSystem
         }
     }
 }
+#endif

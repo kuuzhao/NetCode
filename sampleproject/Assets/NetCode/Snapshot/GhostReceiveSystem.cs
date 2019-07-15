@@ -15,7 +15,6 @@ internal struct GhostEntity
 #endif
 }
 
-[DisableAutoCreation]
 [AlwaysUpdateSystem]
 [UpdateInGroup(typeof(GhostReceiveSystemGroup))]
 [UpdateAfter(typeof(GhostUpdateSystemGroup))]

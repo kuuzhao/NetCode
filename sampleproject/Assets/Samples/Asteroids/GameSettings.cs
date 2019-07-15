@@ -22,11 +22,14 @@ public class GameSettings : UnityEngine.MonoBehaviour, IConvertGameObjectToEntit
     public int levelHeight = 2048;
     public int damageShips = 1;
 
+    public static ServerSettings settings;
+
     public void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
     {
         var data = new GameSettingsComponent();
         dstManager.AddComponentData(entity, data);
-        var settings = default(ServerSettings);
+
+        settings = default(ServerSettings);
         settings.asteroidRadius = asteroidRadius;
         settings.playerRadius = playerRadius;
         settings.bulletRadius = bulletRadius;

@@ -5,7 +5,6 @@ using Unity.Jobs;
 using Unity.Networking.Transport;
 using Unity.Networking.Transport.LowLevel.Unsafe;
 
-[DisableAutoCreation]
 [UpdateInGroup(typeof(ClientSimulationSystemGroup))]
 // dependency just for acking
 [UpdateAfter(typeof(GhostReceiveSystemGroup))]

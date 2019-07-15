@@ -8,7 +8,6 @@ using Unity.Networking.Transport.LowLevel.Unsafe;
 using UnityEngine;
 
 
-[DisableAutoCreation]
 [UpdateInGroup(typeof(ClientAndServerSimulationSystemGroup))]
 [UpdateAfter(typeof(NetworkStreamReceiveSystem))]
 public class RpcSystem<TRpcCollection> : JobComponentSystem

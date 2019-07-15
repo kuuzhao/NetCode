@@ -100,6 +100,8 @@ public struct GhostDeserializerCollection : IGhostDeserializerCollection
     private NativeList<BulletSnapshotData> m_BulletSnapshotDataNewGhosts;
 
 }
+
+[DisableAutoCreation]
 public class MultiplayerSampleGhostReceiveSystem : GhostReceiveSystem<GhostDeserializerCollection>
 {
 }
