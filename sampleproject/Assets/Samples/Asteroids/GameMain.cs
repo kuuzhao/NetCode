@@ -22,14 +22,16 @@ public class GameMain : UnityEngine.MonoBehaviour
                 ClientServerSystemManager.InitServerSystems();
 
                 World.Active.GetExistingSystem<TickServerSimulationSystem>().Enabled = true;
-                var entityManager = ClientServerSystemManager.serverWorld.EntityManager;
+                var serverWorld = ClientServerSystemManager.serverWorld;
+                var entityManager = serverWorld.EntityManager;
                 var settings = entityManager.CreateEntity();
                 var settingsData = GameSettings.settings;
                 settingsData.InitArchetypes(entityManager);
                 entityManager.AddComponentData(settings, settingsData);
+
                 NetworkEndPoint ep = NetworkEndPoint.AnyIpv4;
                 ep.Port = networkPort;
-                ClientServerSystemManager.serverWorld.GetExistingSystem<NetworkStreamReceiveSystem>().Listen(ep);
+                serverWorld.GetExistingSystem<NetworkStreamReceiveSystem>().Listen(ep);
 
                 isPlaying = true;
             }
@@ -42,9 +44,9 @@ public class GameMain : UnityEngine.MonoBehaviour
                 World.Active.GetExistingSystem<TickClientPresentationSystem>().Enabled = true;
                 var clientWorld = ClientServerSystemManager.clientWorld;
                 var entityManager = clientWorld.EntityManager;
-                var settings = new ClientSettings(entityManager);
+                var settingsData = new ClientSettings(entityManager);
                 var settingsEnt = entityManager.CreateEntity();
-                entityManager.AddComponentData(settingsEnt, settings);
+                entityManager.AddComponentData(settingsEnt, settingsData);
 
                 NetworkEndPoint ep = NetworkEndPoint.LoopbackIpv4;
                 ep.Port = networkPort;

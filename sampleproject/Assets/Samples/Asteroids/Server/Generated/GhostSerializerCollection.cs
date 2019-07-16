@@ -6,11 +6,11 @@ public struct GhostSerializerCollection : IGhostSerializerCollection
 {
     public int FindSerializer(EntityArchetype arch)
     {
-        if (m_ShipGhostSerializer.CanSerialize(arch))
-            return 0;
         if (m_AsteroidGhostSerializer.CanSerialize(arch))
-            return 1;
+            return 0;
         if (m_BulletGhostSerializer.CanSerialize(arch))
+            return 1;
+        if (m_ShipGhostSerializer.CanSerialize(arch))
             return 2;
 
         throw new ArgumentException("Invalid serializer type");
@@ -18,9 +18,9 @@ public struct GhostSerializerCollection : IGhostSerializerCollection
 
     public void BeginSerialize(ComponentSystemBase system)
     {
-        m_ShipGhostSerializer.BeginSerialize(system);
         m_AsteroidGhostSerializer.BeginSerialize(system);
         m_BulletGhostSerializer.BeginSerialize(system);
+        m_ShipGhostSerializer.BeginSerialize(system);
 
     }
 
@@ -29,11 +29,11 @@ public struct GhostSerializerCollection : IGhostSerializerCollection
         switch (serializer)
         {
             case 0:
-                return m_ShipGhostSerializer.CalculateImportance(chunk);
-            case 1:
                 return m_AsteroidGhostSerializer.CalculateImportance(chunk);
-            case 2:
+            case 1:
                 return m_BulletGhostSerializer.CalculateImportance(chunk);
+            case 2:
+                return m_ShipGhostSerializer.CalculateImportance(chunk);
 
         }
 
@@ -45,11 +45,11 @@ public struct GhostSerializerCollection : IGhostSerializerCollection
         switch (serializer)
         {
             case 0:
-                return m_ShipGhostSerializer.WantsPredictionDelta;
-            case 1:
                 return m_AsteroidGhostSerializer.WantsPredictionDelta;
-            case 2:
+            case 1:
                 return m_BulletGhostSerializer.WantsPredictionDelta;
+            case 2:
+                return m_ShipGhostSerializer.WantsPredictionDelta;
 
         }
 
@@ -61,11 +61,11 @@ public struct GhostSerializerCollection : IGhostSerializerCollection
         switch (serializer)
         {
             case 0:
-                return m_ShipGhostSerializer.SnapshotSize;
-            case 1:
                 return m_AsteroidGhostSerializer.SnapshotSize;
-            case 2:
+            case 1:
                 return m_BulletGhostSerializer.SnapshotSize;
+            case 2:
+                return m_ShipGhostSerializer.SnapshotSize;
 
         }
 
@@ -82,22 +82,22 @@ public struct GhostSerializerCollection : IGhostSerializerCollection
         {
             case 0:
             {
-                return GhostSendSystem<GhostSerializerCollection>.InvokeSerialize(m_ShipGhostSerializer, serializer,
-                    chunk, startIndex, currentTick, currentSnapshotEntity, (ShipSnapshotData*)currentSnapshotData,
-                    ghosts, ghostEntities, baselinePerEntity, availableBaselines,
-                    dataStream, compressionModel);
-            }
-            case 1:
-            {
                 return GhostSendSystem<GhostSerializerCollection>.InvokeSerialize(m_AsteroidGhostSerializer, serializer,
                     chunk, startIndex, currentTick, currentSnapshotEntity, (AsteroidSnapshotData*)currentSnapshotData,
                     ghosts, ghostEntities, baselinePerEntity, availableBaselines,
                     dataStream, compressionModel);
             }
-            case 2:
+            case 1:
             {
                 return GhostSendSystem<GhostSerializerCollection>.InvokeSerialize(m_BulletGhostSerializer, serializer,
                     chunk, startIndex, currentTick, currentSnapshotEntity, (BulletSnapshotData*)currentSnapshotData,
+                    ghosts, ghostEntities, baselinePerEntity, availableBaselines,
+                    dataStream, compressionModel);
+            }
+            case 2:
+            {
+                return GhostSendSystem<GhostSerializerCollection>.InvokeSerialize(m_ShipGhostSerializer, serializer,
+                    chunk, startIndex, currentTick, currentSnapshotEntity, (ShipSnapshotData*)currentSnapshotData,
                     ghosts, ghostEntities, baselinePerEntity, availableBaselines,
                     dataStream, compressionModel);
             }
@@ -106,12 +106,13 @@ public struct GhostSerializerCollection : IGhostSerializerCollection
                 throw new ArgumentException("Invalid serializer type");
         }
     }
-    private ShipGhostSerializer m_ShipGhostSerializer;
     private AsteroidGhostSerializer m_AsteroidGhostSerializer;
     private BulletGhostSerializer m_BulletGhostSerializer;
+    private ShipGhostSerializer m_ShipGhostSerializer;
 
 }
 
+[DisableAutoCreation]
 public class MultiplayerSampleGhostSendSystem : GhostSendSystem<GhostSerializerCollection>
 {
 }
