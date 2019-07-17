@@ -18,9 +18,7 @@ public class GameMain : UnityEngine.MonoBehaviour
     {
         if (!isPlaying)
         {
-            ipAddr = GUI.TextField(new Rect(100, 25, 200, 50), ipAddr);
-
-            if (GUI.Button(new Rect(100, 100, 200, 100), "Server"))
+            if (GUI.Button(new Rect(100, 100, 200, 50), "Host Server"))
             {
                 ClientServerSystemManager.InitServerSystems();
 
@@ -39,25 +37,7 @@ public class GameMain : UnityEngine.MonoBehaviour
                 isPlaying = true;
             }
 
-            if (GUI.Button(new Rect(100, 200, 200, 100), "Client"))
-            {
-                ClientServerSystemManager.InitClientSystems();
-
-                World.Active.GetExistingSystem<TickClientSimulationSystem>().Enabled = true;
-                World.Active.GetExistingSystem<TickClientPresentationSystem>().Enabled = true;
-                var clientWorld = ClientServerSystemManager.clientWorld;
-                var entityManager = clientWorld.EntityManager;
-                var settingsData = new ClientSettings(entityManager);
-                var settingsEnt = entityManager.CreateEntity();
-                entityManager.AddComponentData(settingsEnt, settingsData);
-
-                NetworkEndPoint ep = NetworkEndPoint.Parse(ipAddr, networkPort);
-                clientWorld.GetExistingSystem<NetworkStreamReceiveSystem>().Connect(ep);
-
-                isPlaying = true;
-            }
-
-            if (GUI.Button(new Rect(100, 300, 200, 100), "ClientListenServer"))
+            if (GUI.Button(new Rect(100, 200, 200, 50), "Host ClientListenServer"))
             {
                 ClientServerSystemManager.InitServerSystems();
                 ClientServerSystemManager.InitClientSystems();
@@ -91,6 +71,27 @@ public class GameMain : UnityEngine.MonoBehaviour
 
                 isPlaying = true;
             }
+
+            ipAddr = GUI.TextField(new Rect(300, 300, 100, 50), ipAddr);
+
+            if (GUI.Button(new Rect(100, 300, 200, 50), "Connect to Server"))
+            {
+                ClientServerSystemManager.InitClientSystems();
+
+                World.Active.GetExistingSystem<TickClientSimulationSystem>().Enabled = true;
+                World.Active.GetExistingSystem<TickClientPresentationSystem>().Enabled = true;
+                var clientWorld = ClientServerSystemManager.clientWorld;
+                var entityManager = clientWorld.EntityManager;
+                var settingsData = new ClientSettings(entityManager);
+                var settingsEnt = entityManager.CreateEntity();
+                entityManager.AddComponentData(settingsEnt, settingsData);
+
+                NetworkEndPoint ep = NetworkEndPoint.Parse(ipAddr, networkPort);
+                clientWorld.GetExistingSystem<NetworkStreamReceiveSystem>().Connect(ep);
+
+                isPlaying = true;
+            }
+
         }
     }
 }
