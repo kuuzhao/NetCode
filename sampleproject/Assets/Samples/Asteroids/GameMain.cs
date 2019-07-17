@@ -7,6 +7,7 @@ public class GameMain : UnityEngine.MonoBehaviour
 {
     private bool isPlaying = false;
     private const ushort networkPort = 50001;
+    public string ipAddr = "127.0.0.1";
 
     public void Start()
     {
@@ -17,6 +18,8 @@ public class GameMain : UnityEngine.MonoBehaviour
     {
         if (!isPlaying)
         {
+            ipAddr = GUI.TextField(new Rect(100, 25, 200, 50), ipAddr);
+
             if (GUI.Button(new Rect(100, 100, 200, 100), "Server"))
             {
                 ClientServerSystemManager.InitServerSystems();
@@ -48,8 +51,7 @@ public class GameMain : UnityEngine.MonoBehaviour
                 var settingsEnt = entityManager.CreateEntity();
                 entityManager.AddComponentData(settingsEnt, settingsData);
 
-                NetworkEndPoint ep = NetworkEndPoint.LoopbackIpv4;
-                ep.Port = networkPort;
+                NetworkEndPoint ep = NetworkEndPoint.Parse(ipAddr, networkPort);
                 clientWorld.GetExistingSystem<NetworkStreamReceiveSystem>().Connect(ep);
 
                 isPlaying = true;
